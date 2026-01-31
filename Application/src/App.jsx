@@ -1,8 +1,16 @@
+
 import React from 'react';
 import { User, Stethoscope, HelpCircle } from 'lucide-react';
+import DoctorPortal from './pages/DoctorPortal';
 import './App.css';
 
 function App() {
+  const path = window.location.pathname;
+
+  if (path === '/doctor') {
+    return <DoctorPortal />;
+  }
+
   return (
     <div className="app-container">
       <div className="content-wrapper">
