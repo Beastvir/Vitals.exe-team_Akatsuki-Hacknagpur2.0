@@ -3,13 +3,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { Users, Calendar, Search } from 'lucide-react';
-import { mockPatients, mockAppointments } from '../data/mockData'; // Used for static patient data, but context for appointments
+import { Users, Calendar, Search, LogOut } from 'lucide-react';
+// import { mockPatients, mockAppointments } from '../data/mockData'; // Removed mock data
 import { AppointmentEditor } from './AppointmentEditor';
 import { useData } from '../context/DataContext';
 
 export function DoctorDashboard() {
-    const { appointments, updateAppointment } = useData();
+    const { appointments, updateAppointment, patients, signOut } = useData();
     const [selectedAppointment, setSelectedAppointment] = useState(null);
     const [searchPatient, setSearchPatient] = useState('');
     const [searchDate, setSearchDate] = useState('');
@@ -27,9 +27,9 @@ export function DoctorDashboard() {
     const sortedDates = Object.keys(appointmentsByDate).sort();
 
     // Filter patients
-    const filteredPatients = mockPatients.filter(patient =>
+    const filteredPatients = patients.filter(patient =>
         patient.name.toLowerCase().includes(searchPatient.toLowerCase()) ||
-        patient.id.toLowerCase().includes(searchPatient.toLowerCase())
+        String(patient.id).toLowerCase().includes(searchPatient.toLowerCase()) // Ensure ID is string
     );
 
     // Filter appointments by date
@@ -54,9 +54,19 @@ export function DoctorDashboard() {
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="mb-8">
-                <h2 className="text-3xl font-bold text-foreground">Doctor Dashboard</h2>
-                <p className="text-muted-foreground mt-1">Manage your patients and appointments</p>
+            <div className="flex justify-between items-start mb-8">
+                <div>
+                    <h2 className="text-3xl font-bold text-foreground">Doctor Dashboard</h2>
+                    <p className="text-muted-foreground mt-1">Manage your patients and appointments</p>
+                </div>
+                <Button
+                    variant="destructive"
+                    onClick={signOut}
+                    className="flex items-center gap-2"
+                >
+                    <LogOut size={16} />
+                    Sign Out
+                </Button>
             </div>
 
             <Tabs defaultValue="appointments" className="space-y-6">
@@ -105,7 +115,8 @@ export function DoctorDashboard() {
 
                                 <div className="grid gap-4">
                                     {appointmentsByDate[date].map((appointment) => {
-                                        const patient = mockPatients.find(p => p.id === appointment.patientId);
+                                        const pId = appointment.patient_id || appointment.patientId;
+                                        const patient = patients.find(p => p.id === pId);
                                         return (
                                             <Card
                                                 key={appointment.id}
@@ -117,9 +128,9 @@ export function DoctorDashboard() {
                                                         <div className="space-y-3 flex-1">
                                                             <div className="flex items-center gap-3">
                                                                 <div className="flex-1">
-                                                                    <p className="font-semibold text-lg">{appointment.patientName}</p>
+                                                                    <p className="font-semibold text-lg">{appointment.patient_name || appointment.patientName}</p>
                                                                     <p className="text-sm text-gray-600">
-                                                                        Patient ID: {appointment.patientId} | Time: {appointment.time}
+                                                                        Patient ID: {pId?.slice(0, 8)}... | Time: {appointment.time}
                                                                     </p>
                                                                     {patient && (
                                                                         <p className="text-sm text-gray-600">
@@ -129,6 +140,7 @@ export function DoctorDashboard() {
                                                                 </div>
                                                             </div>
 
+                                                            {/* ... rest of the card content which uses valid appointment fields ... */}
                                                             <div>
                                                                 <p className="text-sm font-medium text-gray-700">Symptoms:</p>
                                                                 <p className="text-sm text-gray-600">{appointment.symptoms}</p>
@@ -137,7 +149,7 @@ export function DoctorDashboard() {
                                                             <div>
                                                                 <p className="text-sm font-medium text-gray-700 mb-2">Tags:</p>
                                                                 <div className="flex flex-wrap gap-2">
-                                                                    {appointment.tags.map((tag, index) => (
+                                                                    {(appointment.tags || []).map((tag, index) => (
                                                                         <span
                                                                             key={index}
                                                                             className="px-2 py-1 bg-indigo-100 text-indigo-800 rounded text-xs font-medium"
@@ -191,7 +203,10 @@ export function DoctorDashboard() {
 
                     <div className="grid gap-4">
                         {filteredPatients.map((patient) => {
-                            const patientAppointments = appointments.filter(a => a.patientId === patient.id);
+                            const patientAppointments = appointments.filter(a => {
+                                const pId = a.patient_id || a.patientId;
+                                return pId === patient.id;
+                            });
                             return (
                                 <Card key={patient.id}>
                                     <CardHeader>

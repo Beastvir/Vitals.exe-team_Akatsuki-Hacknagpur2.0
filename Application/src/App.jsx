@@ -1,22 +1,42 @@
 import React, { useState } from 'react';
-import { User, Stethoscope, HelpCircle } from 'lucide-react';
+import { User, Stethoscope, HelpCircle, LogOut } from 'lucide-react';
 import { DoctorDashboard } from './pages/DoctorDashboard';
 import PatientPortal from './pages/PatientPortal';
-import { DataProvider } from './context/DataContext';
+import { Login } from './pages/Login';
+import { DataProvider, useData } from './context/DataContext';
 import './App.css';
 
 function AppContent() {
+  const { session, signOut, loading, currentUser } = useData();
   const [currentView, setCurrentView] = useState('landing'); // 'landing', 'doctor', 'patient'
+
+  // Show loading spinner while checking session
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  // If not logged in, show Login page
+  if (!session) {
+    return <Login />;
+  }
+
+  // Auto-routing logic
+  // If user is Admin (Doctor), show Doctor Dashboard
+  if (currentUser?.role === 'doctor' && currentView !== 'doctor') {
+    setCurrentView('doctor');
+  }
+  // If user is Patient and trying to access doctor, force patient view
+  if (currentUser?.role !== 'doctor' && currentView !== 'patient') {
+    setCurrentView('patient');
+  }
 
   if (currentView === 'doctor') {
     return (
       <div className="relative">
-        <button
-          onClick={() => setCurrentView('landing')}
-          className="fixed top-4 right-4 z-50 bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-700 text-sm font-medium"
-        >
-          Switch Portal
-        </button>
         <DoctorDashboard />
       </div>
     );
@@ -25,13 +45,23 @@ function AppContent() {
   if (currentView === 'patient') {
     return (
       <div className="relative">
-        <PatientPortal onSwitchPortal={() => setCurrentView('landing')} />
+        <PatientPortal onSwitchPortal={() => { }} />
       </div>
     );
   }
 
   return (
     <div className="app-container">
+      <div className="app-header-actions absolute top-4 right-4 z-10">
+        <button
+          onClick={signOut}
+          className="bg-red-500/10 text-red-400 border border-red-500/20 px-3 py-1.5 rounded-lg flex items-center gap-2 text-sm hover:bg-red-500/20 transition-colors cursor-pointer"
+        >
+          <LogOut size={16} />
+          Sign Out
+        </button>
+      </div>
+
       <div className="content-wrapper">
         <h1 className="main-title">Health Record System</h1>
         <p className="subtitle">Privacy-Safe Medical Records & Appointments</p>

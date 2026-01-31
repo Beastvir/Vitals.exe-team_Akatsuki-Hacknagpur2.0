@@ -1,10 +1,12 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { ArrowLeft, Stethoscope, User, Heart, FileText, Tag, Calendar, Clock, Save, Search, Plus, File, Trash2, X, Check } from 'lucide-react';
-import { mockPatients, mockMedicines } from '../data/mockData';
+import { mockMedicines } from '../data/mockData';
 import { Input } from './ui/input';
+import { useData } from '../context/DataContext';
 
 export function AppointmentEditor({ appointment, onBack, onSave }) {
+    const { patients } = useData();
     const [view, setView] = useState('details'); // 'details' or 'prescription'
 
     // Prescription State
@@ -28,13 +30,24 @@ export function AppointmentEditor({ appointment, onBack, onSave }) {
     }, [appointment]);
 
     // Find the full patient details
-    const patient = useMemo(() =>
-        mockPatients.find(p => p.id === appointment.patientId) || {},
-        [appointment.patientId]
-    );
+    const pId = appointment.patient_id || appointment.patientId;
+    const patient = useMemo(() => {
+        if (!pId) return {};
+        // Match real patient from context (who has booked before)
+        return patients.find(p => p.id === pId) || {
+            name: appointment.patient_name || appointment.patientName || 'Unknown',
+            id: pId,
+            age: '--',
+            bloodType: '--',
+            email: 'N/A',
+            phone: 'N/A',
+            address: 'N/A',
+            medicalHistory: []
+        };
+    }, [pId, patients, appointment]);
 
-    // Mock gender since it's not in the data structure yet, deterministic based on ID
-    const gender = parseInt(appointment.patientId.replace('P', '')) % 2 !== 0 ? 'Female' : 'Male';
+    // Safe gender fallback
+    const gender = 'Unknown';
 
     const filteredMedicines = useMemo(() => {
         if (!searchQuery) return [];
@@ -129,9 +142,9 @@ export function AppointmentEditor({ appointment, onBack, onSave }) {
                 <div className="bg-card border border-border rounded-xl p-6 shadow-lg">
                     <div className="flex justify-between items-start">
                         <div>
-                            <h1 className="text-3xl font-bold text-white mb-2">{appointment.patientName}</h1>
+                            <h1 className="text-3xl font-bold text-white mb-2">{appointment.patient_name || appointment.patientName}</h1>
                             <p className="text-gray-400 flex items-center gap-2 text-sm">
-                                Patient ID: <span className="text-white font-mono">{appointment.patientId}</span>
+                                Patient ID: <span className="text-white font-mono">{pId}</span>
                                 <span className="text-gray-600">|</span>
                                 Age: <span className="text-white">{patient.age}</span>
                                 <span className="text-gray-600">|</span>
@@ -290,7 +303,7 @@ export function AppointmentEditor({ appointment, onBack, onSave }) {
                                 <div>
                                     <h2 className="text-xl font-bold text-white">Prescription</h2>
                                     <p className="text-gray-400 text-sm">
-                                        For: <span className="font-semibold text-gray-200">{appointment.patientName}</span> |
+                                        For: <span className="font-semibold text-gray-200">{appointment.patient_name || appointment.patientName}</span> |
                                         Date: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                                     </p>
                                 </div>
