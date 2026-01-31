@@ -1,14 +1,14 @@
 
 import React from 'react';
 import { User, Stethoscope, HelpCircle } from 'lucide-react';
-import DoctorPortal from './pages/DoctorPortal';
+import { DoctorDashboard } from './pages/DoctorDashboard';
 import './App.css';
 
 function App() {
   const path = window.location.pathname;
 
   if (path === '/doctor') {
-    return <DoctorPortal />;
+    return <DoctorDashboard />;
   }
 
   return (
