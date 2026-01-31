@@ -1,12 +1,25 @@
 import React, { useState } from 'react';
 import { User, HelpCircle, Calendar, X } from 'lucide-react';
 import './PatientPortal.css';
+import { useData } from '../context/DataContext';
 
-const PatientPortal = () => {
+const PatientPortal = ({ onSwitchPortal }) => {
+    const { appointments, addAppointment } = useData();
     const [activeTab, setActiveTab] = useState('medical-records');
     const [showBooking, setShowBooking] = useState(false);
     const [symptomTags, setSymptomTags] = useState([]);
     const [symptomInput, setSymptomInput] = useState('');
+
+    // Booking Form State
+    const [bookingDate, setBookingDate] = useState('');
+    const [bookingTime, setBookingTime] = useState('');
+    const [symptomDescription, setSymptomDescription] = useState('');
+    const [feelingDescription, setFeelingDescription] = useState('');
+
+    const currentUser = { id: 'P001', name: 'Emma Johnson' }; // Hardcoded for demo
+
+    // Filter appointments for current user
+    const myAppointments = appointments.filter(a => a.patientId === currentUser.id);
 
     const commonSymptoms = [
         "Fever", "Cough", "Headache", "Fatigue", "Nausea", "Dizziness",
@@ -32,9 +45,32 @@ const PatientPortal = () => {
     };
 
     const handleBookAppointment = () => {
-        // Just a UI demo for now, return to list
+        if (!bookingDate || !bookingTime || !symptomDescription) {
+            alert("Please fill in all required fields");
+            return;
+        }
+
+        const newAppointment = {
+            id: `A${Date.now()}`,
+            patientId: currentUser.id,
+            patientName: currentUser.name,
+            date: bookingDate,
+            time: bookingTime,
+            symptoms: symptomDescription,
+            tags: symptomTags,
+            status: 'pending' // Default status
+        };
+
+        addAppointment(newAppointment);
+
+        // Reset form
         setShowBooking(false);
         setSymptomTags([]);
+        setBookingDate('');
+        setBookingTime('');
+        setSymptomDescription('');
+        setFeelingDescription('');
+        setActiveTab('appointments'); // Switch to appointments tab to see the new booking
     };
 
     return (
@@ -44,7 +80,12 @@ const PatientPortal = () => {
                     <User className="pp-logo-icon" size={24} />
                     <span className="pp-logo-text">Patient Portal</span>
                 </div>
-                <a href="/" className="pp-switch-portal-link">Switch Portal</a>
+                <button
+                    onClick={onSwitchPortal}
+                    className="pp-switch-portal-link bg-transparent border-0 cursor-pointer text-blue-500 hover:underline"
+                >
+                    Switch Portal
+                </button>
             </header>
 
             <main className="pp-main">
@@ -167,39 +208,74 @@ const PatientPortal = () => {
                             </button>
                         </div>
 
-                        <div className="pp-appointment-detail-card">
-                            <div className="pp-detail-header">
-                                <div className="pp-dh-left">
-                                    <Calendar className="pp-dh-icon" size={20} />
-                                    <div>
-                                        <h3 className="pp-dh-date">Friday, January 30, 2026</h3>
-                                        <span className="pp-dh-time">Time: 09:00</span>
-                                    </div>
-                                </div>
-                                <span className="pp-status-badge pending">pending</span>
-                            </div>
-
-                            <div className="pp-detail-content">
-                                <div className="pp-detail-block">
-                                    <label>Symptoms:</label>
-                                    <p>Persistent headache for 3 days, sensitivity to light</p>
-                                </div>
-
-                                <div className="pp-detail-block">
-                                    <label>How you're feeling:</label>
-                                    <p>Feeling tired and unable to focus on work</p>
-                                </div>
-
-                                <div className="pp-detail-block">
-                                    <label>Tags:</label>
-                                    <div className="pp-tags-list">
-                                        <span className="pp-tag-v2">Headache</span>
-                                        <span className="pp-tag-v2">Fatigue</span>
-                                        <span className="pp-tag-v2">Blurred Vision</span>
-                                    </div>
+                        {myAppointments.length === 0 ? (
+                            <div className="pp-section">
+                                <div className="text-center py-12 bg-gray-50 rounded-lg border border-gray-200">
+                                    <Calendar className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+                                    <h3 className="text-lg font-medium text-gray-900">No appointments yet</h3>
+                                    <p className="mt-2 text-sm text-gray-500">Book your first appointment to get started.</p>
                                 </div>
                             </div>
-                        </div>
+                        ) : (
+                            <div className="space-y-4">
+                                {myAppointments.map(appt => (
+                                    <div key={appt.id} className="pp-appointment-detail-card">
+                                        <div className="pp-detail-header">
+                                            <div className="pp-dh-left">
+                                                <Calendar className="pp-dh-icon" size={20} />
+                                                <div>
+                                                    <h3 className="pp-dh-date">{new Date(appt.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</h3>
+                                                    <span className="pp-dh-time">Time: {appt.time}</span>
+                                                </div>
+                                            </div>
+                                            <span className={`pp-status-badge ${appt.status}`}>{appt.status}</span>
+                                        </div>
+
+                                        <div className="pp-detail-content">
+                                            <div className="pp-detail-block">
+                                                <label>Symptoms:</label>
+                                                <p>{appt.symptoms}</p>
+                                            </div>
+
+                                            <div className="pp-detail-block">
+                                                <label>Tags:</label>
+                                                <div className="pp-tags-list">
+                                                    {appt.tags && appt.tags.map((tag, i) => (
+                                                        <span key={i} className="pp-tag-v2">{tag}</span>
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            {appt.prescription && (
+                                                <div className="pp-detail-block mt-4 pt-4 border-t border-gray-200">
+                                                    <label className="text-blue-600 font-semibold mb-2 block">Doctor's Prescription:</label>
+                                                    <div className="bg-blue-50 p-4 rounded-lg">
+                                                        {appt.prescription.medicines && appt.prescription.medicines.length > 0 && (
+                                                            <div className="mb-3">
+                                                                <p className="font-medium text-sm text-gray-700 mb-2">Medicines:</p>
+                                                                <ul className="list-disc list-inside space-y-1">
+                                                                    {appt.prescription.medicines.map((med, idx) => (
+                                                                        <li key={idx} className="text-sm text-gray-800">
+                                                                            <span className="font-semibold">{med.name}</span> - {med.dosage}, {med.frequency} for {med.duration}
+                                                                        </li>
+                                                                    ))}
+                                                                </ul>
+                                                            </div>
+                                                        )}
+                                                        {appt.prescription.notes && (
+                                                            <div>
+                                                                <p className="font-medium text-sm text-gray-700 mb-1">Notes:</p>
+                                                                <p className="text-sm text-gray-600 italic">"{appt.prescription.notes}"</p>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 )}
 
@@ -209,11 +285,21 @@ const PatientPortal = () => {
                             <div className="pp-form-row">
                                 <div className="pp-form-group half">
                                     <label>Appointment Date *</label>
-                                    <input type="date" className="pp-input" placeholder="dd-mm-yyyy" />
+                                    <input
+                                        type="date"
+                                        className="pp-input"
+                                        value={bookingDate}
+                                        onChange={(e) => setBookingDate(e.target.value)}
+                                    />
                                 </div>
                                 <div className="pp-form-group half">
                                     <label>Appointment Time *</label>
-                                    <input type="time" className="pp-input" />
+                                    <input
+                                        type="time"
+                                        className="pp-input"
+                                        value={bookingTime}
+                                        onChange={(e) => setBookingTime(e.target.value)}
+                                    />
                                 </div>
                             </div>
 
@@ -223,6 +309,8 @@ const PatientPortal = () => {
                                     className="pp-textarea"
                                     placeholder="Please describe your symptoms in detail..."
                                     rows={4}
+                                    value={symptomDescription}
+                                    onChange={(e) => setSymptomDescription(e.target.value)}
                                 ></textarea>
                             </div>
 
@@ -232,6 +320,8 @@ const PatientPortal = () => {
                                     className="pp-textarea"
                                     placeholder="Describe how you're feeling, any concerns or worries..."
                                     rows={3}
+                                    value={feelingDescription}
+                                    onChange={(e) => setFeelingDescription(e.target.value)}
                                 ></textarea>
                             </div>
 

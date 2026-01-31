@@ -4,11 +4,12 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 import { Users, Calendar, Search } from 'lucide-react';
-import { mockPatients, mockAppointments } from '../data/mockData';
+import { mockPatients, mockAppointments } from '../data/mockData'; // Used for static patient data, but context for appointments
 import { AppointmentEditor } from './AppointmentEditor';
+import { useData } from '../context/DataContext';
 
 export function DoctorDashboard() {
-    const [appointments, setAppointments] = useState(mockAppointments);
+    const { appointments, updateAppointment } = useData();
     const [selectedAppointment, setSelectedAppointment] = useState(null);
     const [searchPatient, setSearchPatient] = useState('');
     const [searchDate, setSearchDate] = useState('');
@@ -37,10 +38,7 @@ export function DoctorDashboard() {
         : sortedDates;
 
     const handleUpdateAppointment = (updatedAppointment) => {
-        const updatedAppointments = appointments.map(appt =>
-            appt.id === updatedAppointment.id ? updatedAppointment : appt
-        );
-        setAppointments(updatedAppointments);
+        updateAppointment(updatedAppointment);
         setSelectedAppointment(null); // Return to dashboard after save
     };
 

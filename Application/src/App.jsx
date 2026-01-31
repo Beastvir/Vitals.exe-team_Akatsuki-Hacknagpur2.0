@@ -1,19 +1,33 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { User, Stethoscope, HelpCircle } from 'lucide-react';
 import { DoctorDashboard } from './pages/DoctorDashboard';
 import PatientPortal from './pages/PatientPortal';
+import { DataProvider } from './context/DataContext';
 import './App.css';
 
-function App() {
-  const path = window.location.pathname;
+function AppContent() {
+  const [currentView, setCurrentView] = useState('landing'); // 'landing', 'doctor', 'patient'
 
-  if (path === '/doctor') {
-    return <DoctorDashboard />;
+  if (currentView === 'doctor') {
+    return (
+      <div className="relative">
+        <button
+          onClick={() => setCurrentView('landing')}
+          className="fixed top-4 right-4 z-50 bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-700 text-sm font-medium"
+        >
+          Switch Portal
+        </button>
+        <DoctorDashboard />
+      </div>
+    );
   }
 
-  if (path === '/patient') {
-    return <PatientPortal />;
+  if (currentView === 'patient') {
+    return (
+      <div className="relative">
+        <PatientPortal onSwitchPortal={() => setCurrentView('landing')} />
+      </div>
+    );
   }
 
   return (
@@ -25,7 +39,7 @@ function App() {
         <div className="portal-buttons">
           <button
             className="portal-card patient-portal"
-            onClick={() => window.location.href = '/patient'}
+            onClick={() => setCurrentView('patient')}
           >
             <User size={48} className="icon" />
             <span>Patient Portal</span>
@@ -33,7 +47,7 @@ function App() {
 
           <button
             className="portal-card doctor-portal"
-            onClick={() => window.location.href = '/doctor'}
+            onClick={() => setCurrentView('doctor')}
           >
             <Stethoscope size={48} className="icon" />
             <span>Doctor Portal</span>
@@ -45,6 +59,14 @@ function App() {
         <HelpCircle size={24} />
       </button>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <DataProvider>
+      <AppContent />
+    </DataProvider>
   );
 }
 
