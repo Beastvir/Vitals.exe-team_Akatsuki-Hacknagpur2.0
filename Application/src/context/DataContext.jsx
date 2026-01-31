@@ -101,8 +101,8 @@ export const DataProvider = ({ children }) => {
         const channel = supabase
             .channel('public:appointments')
             .on('postgres_changes', { event: '*', schema: 'public', table: 'appointments' }, (payload) => {
-                // Ideally optimize this to just insert/update local state instead of refetch
-                // For simplicity/accuracy ensuring we get the latest ID/structure, we refetch
+                console.log('Realtime change received:', payload);
+                // Refetch to ensure state sync, especially for deletions
                 fetchAppointments();
             })
             .subscribe();
