@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import StaggeredMenu from './components/StaggeredMenu';
-import logo from './assets/reactbits-logo.svg';
+import logo from './assets/Logo.png';
 import Galaxy from './components/Galaxy';
 import Hero from './components/Hero';
 import Features from './components/Features';
@@ -11,10 +11,10 @@ import CTA from './components/CTA';
 import Team from './components/Team';
 import Contact from './components/Contact';
 const menuItems = [
-  { label: 'Home', ariaLabel: 'Go to home page', link: '/' },
-  { label: 'About', ariaLabel: 'Learn about us', link: '/about' },
-  { label: 'Services', ariaLabel: 'View our services', link: '/services' },
-  { label: 'Contact', ariaLabel: 'Get in touch', link: '/contact' }
+  { label: 'Home', ariaLabel: 'Go to home page', link: '#home' },
+  { label: 'Features', ariaLabel: 'Learn about us', link: '#features' },
+  { label: 'Working', ariaLabel: 'View our services', link: '#working' },
+  { label: 'Team', ariaLabel: 'Get in touch', link: '#team' }
 ];
 
 const socialItems = [
@@ -22,6 +22,7 @@ const socialItems = [
   { label: 'GitHub', link: 'https://github.com' },
   { label: 'LinkedIn', link: 'https://linkedin.com' }
 ];
+
 function App() {
 
 
@@ -49,7 +50,7 @@ function App() {
         </div>
 
         {/* Hero Section */}
-        <section style={{ position: 'relative', height: '100vh', width: '100%', overflow: 'hidden' }}>
+        <section id="home" style={{ position: 'relative', height: '100vh', width: '100%', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0 }}>
             <Galaxy
               mouseRepulsion={true}
@@ -77,9 +78,15 @@ function App() {
           {/* Gradient Fade from Black */}
           <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black to-transparent z-20 pointer-events-none" />
           <StarField density={5} speed={0.5} />
-          <Features />
-          <HowItWorks />
-          <Team />
+          <div id="features">
+            <Features />
+          </div>
+          <div id="working">
+            <HowItWorks />
+          </div>
+          <div id="team">
+            <Team />
+          </div>
           <CTA />
           <Contact />
         </section>
