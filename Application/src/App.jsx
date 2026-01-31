@@ -2,6 +2,7 @@
 import React from 'react';
 import { User, Stethoscope, HelpCircle } from 'lucide-react';
 import DoctorPortal from './pages/DoctorPortal';
+import PatientPortal from './pages/PatientPortal';
 import './App.css';
 
 function App() {
@@ -11,6 +12,10 @@ function App() {
     return <DoctorPortal />;
   }
 
+  if (path === '/patient') {
+    return <PatientPortal />;
+  }
+
   return (
     <div className="app-container">
       <div className="content-wrapper">
@@ -18,12 +23,18 @@ function App() {
         <p className="subtitle">Privacy-Safe Medical Records & Appointments</p>
 
         <div className="portal-buttons">
-          <button className="portal-card patient-portal">
+          <button
+            className="portal-card patient-portal"
+            onClick={() => window.location.href = '/patient'}
+          >
             <User size={48} className="icon" />
             <span>Patient Portal</span>
           </button>
 
-          <button className="portal-card doctor-portal">
+          <button
+            className="portal-card doctor-portal"
+            onClick={() => window.location.href = '/doctor'}
+          >
             <Stethoscope size={48} className="icon" />
             <span>Doctor Portal</span>
           </button>

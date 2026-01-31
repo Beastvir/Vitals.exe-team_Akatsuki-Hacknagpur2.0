@@ -1,0 +1,476 @@
+.patient-portal-container {
+    min-height: 100vh;
+    background-color: #050505;
+    color: white;
+    font-family: Inter, system-ui, sans-serif;
+}
+
+.pp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #1f1f1f;
+    background-color: #050505;
+}
+
+.pp-logo-section {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.pp-logo-icon {
+    color: #2dedda;
+}
+
+.pp-logo-text {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: white;
+}
+
+.pp-switch-portal-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.pp-switch-portal-link:hover {
+    color: #a1a1aa;
+}
+
+.pp-main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.pp-welcome-section {
+    margin-bottom: 2rem;
+}
+
+.pp-welcome-section h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    color: white;
+}
+
+.pp-welcome-section p {
+    color: #a1a1aa;
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+/* Tabs */
+.pp-tabs {
+    display: inline-flex;
+    background: #0f1014;
+    padding: 0.25rem;
+    border-radius: 999px;
+    margin-bottom: 3rem;
+}
+
+.pp-tab {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1.25rem;
+    background: transparent;
+    border: none;
+    color: #a1a1aa;
+    border-radius: 999px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+}
+
+.pp-tab.active {
+    background: transparent;
+    color: white;
+    font-weight: 600;
+}
+
+.pp-tab:hover {
+    color: white;
+}
+
+
+/* Sections */
+.pp-section {
+    margin-bottom: 3rem;
+}
+
+.pp-section-header {
+    margin-bottom: 1.5rem;
+}
+
+.pp-section-header h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem 0;
+    color: white;
+}
+
+.pp-section-header p {
+    color: #a1a1aa;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.pp-section-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+}
+
+.pp-section-header-row h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem 0;
+    color: white;
+}
+
+.pp-section-header-row p {
+    color: #a1a1aa;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.pp-book-btn {
+    background: #2dedda;
+    color: #000;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: filter 0.2s;
+}
+
+.pp-book-btn:hover {
+    filter: brightness(0.9);
+}
+
+/* Personal Info Grid */
+.pp-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.pp-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.pp-info-item.full-width {
+    grid-column: 1 / -1;
+}
+
+.pp-info-item label {
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.pp-info-item .pp-info-value {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+/* Medical History Tags */
+.pp-tags-list {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.pp-tag {
+    background: #eff6ff;
+    color: #1d4ed8;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.pp-tag-v2 {
+    background: #e0e7ff;
+    color: #3730a3;
+    padding: 0.3rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* Past Appointments */
+.pp-appointment-card {
+    background: #0f1014;
+    border: 1px solid #1f1f1f;
+    border-radius: 12px;
+    padding: 1.5rem;
+    max-width: 600px;
+}
+
+.pp-appt-header h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.pp-appt-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.pp-appt-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.pp-appt-label {
+    color: #6b7280;
+}
+
+.pp-status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: lowercase;
+}
+
+.pp-status-badge.pending {
+    background: #fef9c3;
+    color: #854d0e;
+}
+
+/* Appointment Detail Card (New) */
+.pp-appointment-detail-card {
+    background: #0f1014;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid #1f1f1f;
+}
+
+.pp-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+}
+
+.pp-dh-left {
+    display: flex;
+    gap: 1rem;
+}
+
+.pp-dh-icon {
+    color: #3b82f6;
+    margin-top: 0.2rem;
+}
+
+.pp-dh-date {
+    margin: 0 0 0.25rem 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+}
+
+.pp-dh-time {
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.pp-detail-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.pp-detail-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.pp-detail-block label {
+    color: #4b5563;
+    font-size: 0.9rem;
+}
+
+.pp-detail-block p {
+    color: #6b7280;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+/* Booking Form */
+.pp-form-container {
+    background: #0f1014;
+    /* Dark form background */
+    padding: 2rem;
+    /* Should be borderless or subtle border? Screenshot looks like it might seamlessly blend or have subtle container */
+    /* Screenshot shows the form fields directly on the dark bg. The container is implied. */
+    border-radius: 12px;
+}
+
+.pp-form-row {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.pp-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    width: 100%;
+}
+
+.pp-form-group.half {
+    width: 50%;
+}
+
+.pp-form-group label {
+    color: white;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.pp-input,
+.pp-textarea {
+    background: #050505;
+    /* Blacker input bg */
+    border: 1px solid #1f1f1f;
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    color: white;
+    font-family: inherit;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.pp-input:focus,
+.pp-textarea:focus {
+    border-color: #3b82f6;
+}
+
+.pp-tags-input-container {
+    background: #050505;
+    border: 1px solid #1f1f1f;
+    border-radius: 8px;
+    padding: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    min-height: 50px;
+}
+
+.pp-tags-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-family: inherit;
+    font-size: 0.95rem;
+    flex: 1;
+    min-width: 150px;
+    padding: 0.3rem;
+}
+
+.pp-tag-chip {
+    background: #27272a;
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+}
+
+.pp-tag-chip button {
+    background: transparent;
+    border: none;
+    color: #a1a1aa;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0;
+}
+
+.pp-tag-chip button:hover {
+    color: white;
+}
+
+.pp-common-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.pp-common-tag-btn {
+    background: transparent;
+    border: 1px solid #3f3f46;
+    color: #e4e4e7;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.pp-common-tag-btn:hover {
+    background: #27272a;
+    border-color: #71717a;
+}
+
+.pp-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 3rem;
+}
+
+.pp-cancel-btn {
+    background: #18181b;
+    border: 1px solid #3f3f46;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.pp-cancel-btn:hover {
+    background: #27272a;
+}
+
+.pp-submit-btn {
+    background: #2dedda;
+    color: #000;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: filter 0.2s;
+}
+
+.pp-submit-btn:hover {
+    filter: brightness(0.9);
+}
