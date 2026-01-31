@@ -41,9 +41,9 @@ function App() {
             menuButtonColor="#ffffff"
             openMenuButtonColor="#000"
             changeMenuColorOnOpen={true}
-            colors={['#B19EEF', '#5227FF']}
+            colors={['#60A5FA', '#2563EB']}
             logoUrl={logo}
-            accentColor="#5227FF"
+            accentColor="#2563EB"
             onMenuOpen={() => console.log('Menu opened')}
             onMenuClose={() => console.log('Menu closed')}
           />

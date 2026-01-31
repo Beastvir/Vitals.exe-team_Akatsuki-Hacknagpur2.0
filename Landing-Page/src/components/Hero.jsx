@@ -11,12 +11,12 @@ const Hero = () => {
 
             {/* Main Headline */}
             <h1 className="text-4xl md:text-6xl font-bold text-white max-w-4xl leading-tight mb-8">
-                AI-generated medical summaries with <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">zero raw data storage</span> and <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-red-500">full explainability</span>.
+                AI-generated medical summaries with <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">zero raw data storage</span> and <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-cyan-500">full explainability</span>.
             </h1>
 
             {/* Actions */}
             <div className="flex flex-wrap items-center justify-center gap-4 mb-16 pointer-events-auto">
-                <button className="px-8 py-3 rounded-xl bg-gradient-to-r from-pink-500 to-rose-500 text-white font-semibold hover:opacity-90 transition-opacity">
+                <button className="px-8 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold hover:opacity-90 transition-opacity">
                     Get Started →
                 </button>
                 <button className="px-8 py-3 rounded-xl border border-slate-700 bg-slate-900/50 text-slate-200 font-semibold hover:bg-slate-800 transition-colors backdrop-blur-sm">

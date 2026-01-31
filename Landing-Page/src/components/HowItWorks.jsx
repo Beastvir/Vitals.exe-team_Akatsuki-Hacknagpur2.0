@@ -6,26 +6,26 @@ const StepCard = ({ number, icon: Icon, title, description, color }) => {
     // Simplified theme extraction
     const getTheme = (colorTheme) => {
         switch (colorTheme) {
-            case 'violet': return {
-                text: 'text-violet-400',
-                bg: 'bg-violet-950', // Darker background for card
-                border: 'border-violet-500/30',
-                glow: 'shadow-[0_0_30px_-5px_rgba(139,92,246,0.3)]',
-                gradient: 'from-violet-500/20 to-transparent',
+            case 'blue': return {
+                text: 'text-blue-400',
+                bg: 'bg-blue-950', // Darker background for card
+                border: 'border-blue-500/30',
+                glow: 'shadow-[0_0_30px_-5px_rgba(59,130,246,0.3)]',
+                gradient: 'from-blue-500/20 to-transparent',
             };
-            case 'pink': return {
-                text: 'text-pink-400',
-                bg: 'bg-pink-950',
-                border: 'border-pink-500/30',
-                glow: 'shadow-[0_0_30px_-5px_rgba(236,72,153,0.3)]',
-                gradient: 'from-pink-500/20 to-transparent',
+            case 'indigo': return {
+                text: 'text-indigo-400',
+                bg: 'bg-indigo-950',
+                border: 'border-indigo-500/30',
+                glow: 'shadow-[0_0_30px_-5px_rgba(99,102,241,0.3)]',
+                gradient: 'from-indigo-500/20 to-transparent',
             };
-            case 'emerald': return {
-                text: 'text-emerald-400',
-                bg: 'bg-emerald-950',
-                border: 'border-emerald-500/30',
-                glow: 'shadow-[0_0_30px_-5px_rgba(16,185,129,0.3)]',
-                gradient: 'from-emerald-500/20 to-transparent',
+            case 'sky': return {
+                text: 'text-sky-400',
+                bg: 'bg-sky-950',
+                border: 'border-sky-500/30',
+                glow: 'shadow-[0_0_30px_-5px_rgba(14,165,233,0.3)]',
+                gradient: 'from-sky-500/20 to-transparent',
             };
             default: return {};
         }
@@ -67,21 +67,21 @@ const HowItWorks = () => {
             icon: Upload,
             title: 'Upload or Book Appointment',
             description: 'Submit medical records or schedule a consultation. Support for handwritten prescriptions and digital files.',
-            color: 'violet'
+            color: 'blue'
         },
         {
             number: '02',
             icon: Cpu,
             title: 'AI Summarizes Safely',
             description: 'HT-3 processes records with zero raw data storage. End-to-end encryption ensures complete privacy.',
-            color: 'pink'
+            color: 'indigo'
         },
         {
             number: '03',
             icon: FileCheck,
             title: 'Doctor Reviews, Prescribes, and Explains',
             description: 'Healthcare providers access AI-generated insights. Patients receive clear explanations and treatment plans.',
-            color: 'emerald'
+            color: 'sky'
         }
     ];
 
@@ -90,7 +90,7 @@ const HowItWorks = () => {
             {/* Header stays separate for context */}
             <div className="text-center py-20 px-4">
                 <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">
-                    How It <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-500 to-pink-500">Works</span>
+                    How It <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500">Works</span>
                 </h2>
                 <p className="text-slate-400 text-lg">
                     Three simple steps to transform healthcare delivery

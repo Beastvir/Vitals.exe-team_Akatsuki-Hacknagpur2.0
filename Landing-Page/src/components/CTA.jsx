@@ -6,7 +6,7 @@ const CTA = () => {
         <div className="relative py-32 px-4 w-full pointer-events-auto flex flex-col items-center justify-center text-center">
 
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full border border-pink-500/30 bg-pink-500/10 text-pink-300 mb-8 backdrop-blur-sm shadow-[0_0_20px_-5px_rgba(236,72,153,0.3)]">
+            <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-300 mb-8 backdrop-blur-sm shadow-[0_0_20px_-5px_rgba(59,130,246,0.3)]">
                 <Sparkles size={16} />
                 <span className="text-sm font-medium">Join 10,000+ Healthcare Professionals</span>
             </div>
@@ -15,7 +15,7 @@ const CTA = () => {
             <h2 className="text-5xl md:text-7xl font-bold text-white mb-4 tracking-tight">
                 Build the Future of
             </h2>
-            <h2 className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-500 via-pink-500 to-rose-500 mb-8 tracking-tight pb-2">
+            <h2 className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-indigo-500 to-sky-500 mb-8 tracking-tight pb-2">
                 Healthcare, Safely
             </h2>
 

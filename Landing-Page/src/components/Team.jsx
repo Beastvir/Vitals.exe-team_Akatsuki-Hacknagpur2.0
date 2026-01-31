@@ -13,8 +13,8 @@ const Team = () => {
             title: "Vishal Asati",
             subtitle: "UI/UX Designer",
             handle: "@vishalasati.10",
-            borderColor: "#a78bfa", // Violet
-            gradient: "linear-gradient(145deg, #a78bfa, #2e1065)",
+            borderColor: "#60a5fa", // Blue
+            gradient: "linear-gradient(145deg, #60a5fa, #1e3a8a)",
             url: "#"
         },
         {
@@ -22,8 +22,8 @@ const Team = () => {
             title: "Virendra Uplenchwar",
             subtitle: "Frontend Developer",
             handle: "@vir_d_uplenchwar",
-            borderColor: "#f472b6", // Pink
-            gradient: "linear-gradient(145deg, #f472b6, #500724)",
+            borderColor: "#38bdf8", // Sky
+            gradient: "linear-gradient(145deg, #38bdf8, #0c4a6e)",
             url: "#"
         },
         {
@@ -49,9 +49,9 @@ const Team = () => {
     return (
         <div className="relative py-24 px-4 w-full max-w-7xl mx-auto pointer-events-auto">
             <div className="text-center mb-16">
-                <span className="text-pink-400 font-medium tracking-wider text-sm uppercase mb-4 block">Our Team</span>
+                <span className="text-blue-400 font-medium tracking-wider text-sm uppercase mb-4 block">Our Team</span>
                 <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                    Meet the <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-500 to-pink-500">Visionaries</span>
+                    Meet the <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500">Visionaries</span>
                 </h2>
                 <p className="text-slate-400 max-w-2xl mx-auto text-lg">
                     A multidisciplinary team of engineers, and designers working together to transform patient care.
