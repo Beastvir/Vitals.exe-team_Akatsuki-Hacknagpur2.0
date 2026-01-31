@@ -142,15 +142,15 @@ const PatientPortal = ({ onSwitchPortal }) => {
                                 </div>
                                 <div className="pp-info-item">
                                     <label>Age</label>
-                                    <div className="pp-info-value">--</div>
+                                    <div className="pp-info-value">{user.age || '--'}</div>
                                 </div>
                                 <div className="pp-info-item">
                                     <label>Gender</label>
-                                    <div className="pp-info-value">--</div>
+                                    <div className="pp-info-value">{user.gender || '--'}</div>
                                 </div>
                                 <div className="pp-info-item">
                                     <label>Blood Type</label>
-                                    <div className="pp-info-value">--</div>
+                                    <div className="pp-info-value">{user.bloodType || '--'}</div>
                                 </div>
                                 <div className="pp-info-item">
                                     <label>Email</label>
@@ -158,11 +158,11 @@ const PatientPortal = ({ onSwitchPortal }) => {
                                 </div>
                                 <div className="pp-info-item">
                                     <label>Phone</label>
-                                    <div className="pp-info-value">555-0101</div>
+                                    <div className="pp-info-value">{user.phone || '--'}</div>
                                 </div>
                                 <div className="pp-info-item full-width">
                                     <label>Address</label>
-                                    <div className="pp-info-value">123 Maple St, Springfield</div>
+                                    <div className="pp-info-value">{user.address || '--'}</div>
                                 </div>
                             </div>
                         </div>
@@ -173,8 +173,13 @@ const PatientPortal = ({ onSwitchPortal }) => {
                                 <p>Previous conditions and diagnoses</p>
                             </div>
                             <div className="pp-tags-list">
-                                <span className="pp-tag">Hypertension</span>
-                                <span className="pp-tag">Seasonal Allergies</span>
+                                {user.medicalHistory && user.medicalHistory.length > 0 ? (
+                                    user.medicalHistory.map((condition, index) => (
+                                        <span key={index} className="pp-tag">{condition}</span>
+                                    ))
+                                ) : (
+                                    <span className="text-gray-500 italic">No recorded medical history</span>
+                                )}
                             </div>
                         </div>
 

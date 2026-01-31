@@ -20,14 +20,64 @@ export const DataProvider = ({ children }) => {
     // Fetch initial data
     const fetchAppointments = async () => {
         try {
-            // RLS policies will automatically filter this based on who is logged in!
-            const { data, error } = await supabase
+            // 1. Fetch Appointments
+            const { data: apptData, error: apptError } = await supabase
                 .from('appointments')
                 .select('*')
                 .order('created_at', { ascending: false });
 
-            if (error) throw error;
-            if (data) setAppointments(data);
+            if (apptError) throw apptError;
+
+            if (apptData) {
+                setAppointments(apptData);
+
+                // 2. Extract Unique Patient IDs
+                const patientIds = [...new Set(apptData.map(a => a.patient_id || a.patientId).filter(Boolean))];
+
+                if (patientIds.length === 0) {
+                    setPatients([]);
+                    return;
+                }
+
+                // 3. Fetch Profiles for these IDs
+                const { data: profileData, error: profileError } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .in('id', patientIds);
+
+                if (profileError) {
+                    console.error("Error fetching patient profiles:", profileError);
+                    // Continue with just appointment names if profile fetch fails
+                }
+
+                // 4. Merge Data to create 'patients' list
+                const profileMap = new Map();
+                if (profileData) {
+                    profileData.forEach(p => profileMap.set(p.id, p));
+                }
+
+                const uniquePatientsMap = new Map();
+                apptData.forEach(appt => {
+                    const pId = appt.patient_id || appt.patientId;
+                    if (pId && !uniquePatientsMap.has(pId)) {
+                        const profile = profileMap.get(pId) || {};
+
+                        uniquePatientsMap.set(pId, {
+                            id: pId,
+                            name: profile.full_name || appt.patient_name || appt.patientName || 'Unknown',
+                            email: profile.email || 'N/A',
+                            phone: profile.phone || 'N/A',
+                            age: profile.age || '--',
+                            gender: profile.gender || '--',
+                            bloodType: profile.blood_type || '--',
+                            address: profile.address || 'N/A',
+                            medicalHistory: profile.medical_history || []
+                        });
+                    }
+                });
+
+                setPatients(Array.from(uniquePatientsMap.values()));
+            }
         } catch (err) {
             console.error('Error fetching appointments:', err);
         }
@@ -63,29 +113,77 @@ export const DataProvider = ({ children }) => {
         };
     }, []);
 
-    const handleSessionUpdate = (session) => {
+    const handleSessionUpdate = async (session) => {
         setSession(session);
         if (session?.user) {
             const { user_metadata, email } = session.user;
-            const name = user_metadata?.full_name || user_metadata?.name || email.split('@')[0];
+            let name = user_metadata?.full_name || user_metadata?.name || email.split('@')[0];
+            let role = email === ADMIN_EMAIL ? 'doctor' : 'patient';
 
-            // Check if admin
-            const role = email === ADMIN_EMAIL ? 'doctor' : 'patient';
-
-            setCurrentUser({
+            // Default Profile Structure
+            let profileData = {
                 id: session.user.id,
                 name: name,
                 email: email,
-                role: role
-            });
+                role: role,
+                age: null,
+                gender: null,
+                bloodType: null,
+                phone: null,
+                address: null,
+                medicalHistory: [],
+                isProfileComplete: false
+            };
 
-            // Now that we have a user (and thus an ID for RLS), fetch data
+            // Fetch extra profile data from DB
+            try {
+                const { data, error } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', session.user.id)
+                    .single();
+
+                if (data) {
+                    // Check if profile is complete (basic fields present)
+                    const isComplete = !!(data.age && data.gender && data.blood_type && data.phone && data.address);
+
+                    profileData = {
+                        ...profileData,
+                        name: data.full_name || name,
+                        role: data.role || role,
+                        age: data.age,
+                        gender: data.gender,
+                        bloodType: data.blood_type,
+                        phone: data.phone,
+                        address: data.address,
+                        medicalHistory: data.medical_history || [],
+                        isProfileComplete: isComplete
+                    };
+                } else if (error && error.code !== 'PGRST116') {
+                    console.warn("Profile fetch error:", error);
+                } else {
+                    // If no profile row exists, create one!
+                    const { error: insertError } = await supabase.from('profiles').insert([{ id: session.user.id, email, full_name: name, role }]);
+                    if (insertError) console.error("Error creating initial profile:", insertError);
+                }
+
+            } catch (err) {
+                console.error("Profile load logic error:", err);
+            }
+
+            setCurrentUser(profileData);
+
+            // Fetch appointments
             fetchAppointments();
         } else {
             setCurrentUser(null);
             setAppointments([]); // Clear data on logout
         }
         setLoading(false);
+    };
+
+    const refreshProfile = () => {
+        if (session) handleSessionUpdate(session);
     };
 
     const addAppointment = async (newAppointment) => {
@@ -145,7 +243,8 @@ export const DataProvider = ({ children }) => {
         setCurrentUser,
         session,
         loading,
-        signOut
+        signOut,
+        refreshProfile
     };
 
     return (

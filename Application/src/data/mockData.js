@@ -251,6 +251,21 @@ export const mockAppointments = [
     }
 ];
 
+export const medicalConditionsList = [
+    "Hypertension", "Type 2 Diabetes", "Asthma", "High Cholesterol", "Arthritis",
+    "Migraine", "Depression", "Anxiety Disorder", "GERD", "Thyroid Disorder",
+    "Eczema", "Psoriasis", "Acne", "Allergic Rhinitis", "Insomnia",
+    "Obesity", "Osteoporosis", "Anemia", "Kidney Stones", "Urinary Tract Infection",
+    "Bronchitis", "Pneumonia", "Sinusitis", "Concussion", "Vertigo",
+    "Tinnitus", "Glaucoma", "Cataracts", "Dry Eye Syndrome", "Gingivitis",
+    "Carpal Tunnel Syndrome", "Sciatica", "Fibromyalgia", "Chronic Fatigue Syndrome", "Lupus",
+    "Celiac Disease", "Irritable Bowel Syndrome (IBS)", "Crohn's Disease", "Ulcerative Colitis", "Hepatitis B",
+    "Hepatitis C", "HIV/AIDS", "Tuberculosis", "Malaria", "Dengue",
+    "COVID-19 History", "Heart Arrhythmia", "Coronary Artery Disease", "Heart Failure", "Stroke History",
+    "Epilepsy", "Parkinson's Disease", "Alzheimer's Disease", "Bipolar Disorder", "Schizophrenia",
+    "PTSD", "ADHD", "Autism Spectrum Disorder", "Eating Disorder"
+];
+
 export const mockMedicines = [
     { id: "M001", name: "Paracetamol", category: "Pain Relief" },
     { id: "M002", name: "Ibuprofen", category: "Pain Relief" },

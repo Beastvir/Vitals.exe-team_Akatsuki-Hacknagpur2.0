@@ -3,11 +3,12 @@ import { User, Stethoscope, HelpCircle, LogOut } from 'lucide-react';
 import { DoctorDashboard } from './pages/DoctorDashboard';
 import PatientPortal from './pages/PatientPortal';
 import { Login } from './pages/Login';
+import { Onboarding } from './pages/Onboarding';
 import { DataProvider, useData } from './context/DataContext';
 import './App.css';
 
 function AppContent() {
-  const { session, signOut, loading, currentUser } = useData();
+  const { session, signOut, loading, currentUser, refreshProfile } = useData();
   const [currentView, setCurrentView] = useState('landing'); // 'landing', 'doctor', 'patient'
 
   // Show loading spinner while checking session
@@ -22,6 +23,15 @@ function AppContent() {
   // If not logged in, show Login page
   if (!session) {
     return <Login />;
+  }
+
+  // Check Onboarding - Only for non-admin (doctors don't need patient profile fields usually)
+  // If doctor needs profile, remove the role check. 
+  // Assuming 'doctor' (admin) skips this for now as per requirement focusing on new user (patient)
+  if (currentUser?.role !== 'doctor' && currentUser?.isProfileComplete === false) {
+    return (
+      <Onboarding onComplete={() => refreshProfile()} />
+    );
   }
 
   // Auto-routing logic
