@@ -3,13 +3,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { Users, Calendar, Search, LogOut } from 'lucide-react';
+import { Users, Calendar, Search, LogOut, Trash2 } from 'lucide-react';
 // import { mockPatients, mockAppointments } from '../data/mockData'; // Removed mock data
 import { AppointmentEditor } from './AppointmentEditor';
 import { useData } from '../context/DataContext';
 
 export function DoctorDashboard() {
-    const { appointments, updateAppointment, patients, signOut } = useData();
+    const { appointments, updateAppointment, deleteAppointment, patients, signOut } = useData();
     const [selectedAppointment, setSelectedAppointment] = useState(null);
     const [searchPatient, setSearchPatient] = useState('');
     const [searchDate, setSearchDate] = useState('');
@@ -168,7 +168,21 @@ export function DoctorDashboard() {
                                                                 }`}>
                                                                 {appointment.status}
                                                             </span>
-                                                            <Button size="sm">View Details</Button>
+                                                            <div className="flex gap-2">
+                                                                <Button
+                                                                    size="sm"
+                                                                    variant="destructive"
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        if (window.confirm('Are you sure you want to delete this appointment?')) {
+                                                                            deleteAppointment(appointment.id);
+                                                                        }
+                                                                    }}
+                                                                >
+                                                                    <Trash2 size={16} />
+                                                                </Button>
+                                                                <Button size="sm">View Details</Button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </CardContent>

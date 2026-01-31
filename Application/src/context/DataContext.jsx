@@ -233,11 +233,25 @@ export const DataProvider = ({ children }) => {
         setCurrentUser(null);
     };
 
+    const deleteAppointment = async (id) => {
+        try {
+            const { error } = await supabase
+                .from('appointments')
+                .delete()
+                .eq('id', id);
+
+            if (error) console.error("Error deleting appointment:", error);
+        } catch (err) {
+            console.error("Error in deleteAppointment:", err);
+        }
+    };
+
     const value = {
         appointments,
         patients,
         addAppointment,
         updateAppointment,
+        deleteAppointment,
         getPatientAppointments,
         currentUser,
         setCurrentUser,
